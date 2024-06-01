@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import tailoeSwift1 from "../../../src/assets/images/tailoeSwift1.jpg"
+import tailoeSwift1 from "../../../src/assets/images/tailoeSwift1.jpg";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button"
 ---
 <div class="grid justify-between md:grid-cols-2 gap-8 mb-4">
     <div class="flex ">
@@ -9,26 +11,20 @@ import tailoeSwift1 from "../../../src/assets/images/tailoeSwift1.jpg"
         </div>
         
     </div>
-    <!-- <div style="position:relative">
-        <p class="text-center text-[2.5rem] font-medium">13 Taylor Swift Songs Fans Are Convinced Are About Harry Styles</p>
+    <div class="flex flex-col justify-between"> 
+       
+        <p class="text-[1.5rem] font-bold">13 Taylor Swift Songs Fans Are Convinced Are About Harry Styles</p>
         <p class="text-justify mt-4">
             Since her debut onto the country music scene in the late ‘00s, Swift has had her share of celebrity boyfriends, perhaps none more celebrated than pop star and ex-One Direction member Harry Styles. 
 In reality, the pair only dated from December 2012 to January 2013 (just one month), but the relationship left an impact, so do you think these songs are about Harry Styles?
         </p>
-        <p style="position:absolute; bottom:0;">
-            Rank the list 
-        </p>
-    </div> -->
-    <div class="flex flex-col justify-between"> 
-        <div>
-            <p class="text-center text-[2.5rem] font-medium">13 Taylor Swift Songs Fans Are Convinced Are About Harry Styles</p>
-            <p class="text-justify mt-4">
-                Since her debut onto the country music scene in the late ‘00s, Swift has had her share of celebrity boyfriends, perhaps none more celebrated than pop star and ex-One Direction member Harry Styles. 
-    In reality, the pair only dated from December 2012 to January 2013 (just one month), but the relationship left an impact, so do you think these songs are about Harry Styles?
-            </p>
-        </div>    
-        <p>
-            Rank the list 
+        <div class="flex items-center">
+            <span class="font-medium">Rules</span>
+            <Separator className="ml-1 mr-1" orientation="vertical" />
+            <span class="text-[.7rem]" >Arrange the rank of the list in an order, such that rank 1 goes to song which most related to harry style</span>
+        </div>
+        <p >
+            <Button >Rank it</Button>
         </p>
     </div>
    

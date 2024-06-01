@@ -24,7 +24,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
-const Triviablock = () => {
+const Triviablock = (props: any) => {
     return (
       <>
         

@@ -26,16 +26,43 @@ import {
 
 import CarouselStyle1 from "./carousel-style1";
 
+//import * as PusherPushNotifications from "@pusher/push-notifications-web"
+import PusherPushNotifications from "./pusher";
+
+
 const Siteintro = (props: any) => {
-console.log(props);
+
+
+//pusher test code
+
+// const beamsClient = new props.pusher.Client({
+//   instanceId: '17413677-767d-4eaa-b86b-41716552c235',
+// });
+
+// beamsClient.start()
+//   .then(() => beamsClient.addDeviceInterest('hello'))
+//   .then(() => console.log('Successfully registered and subscribed!'))
+//   .catch(console.error);
+
+
+////////////////////
+
 const SLIDES = Array.from(Array(9).keys());
   const plugin = React.useRef(
       Autoplay({ delay: 2000, stopOnInteraction: false })
   )
  
-  // useEffect(() => {
+  useEffect(() => {
+    const beamsClient = new (PusherPushNotifications as any).Client({
+      instanceId: '17413677-767d-4eaa-b86b-41716552c235',
+    });
+  
+    beamsClient.start()
+      .then(() => beamsClient.addDeviceInterest('hello'))
+      .then(() => console.log('Successfully registered and subscribed!'))
+      .catch(console.error);
    
-  // }, []);
+  }, []);
   // const plugin = React.useRef(
   //   Autoplay({ delay: 2000, stopOnInteraction: true })
   // )

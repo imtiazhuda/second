@@ -1,0 +1,93 @@
+
+
+
+
+    <h1>This is test work page</h1>
+    <input type="text" id="msg" ><br><br>
+    <input type="button" value="Submit" id="send">
+    <br><br>
+    <div id="allMsg">
+
+    </div>
+
+<script>
+  const msg: any = document.querySelector('#msg');
+  const button: any = document.querySelector('#send');
+  const allMsg: any = document.querySelector('#allMsg');
+  button.addEventListener('click', () => {
+    // let newDiv = document.createElement("div");
+    // let newContent = document.createTextNode(msg.value);
+    // newDiv.appendChild(newContent);
+    // allMsg.appendChild(newDiv);
+    // msg.value = "";
+    sendPing();
+  });
+
+  const sendPing = async ()=> {
+    const response = await fetch(`https://testchat-cpla.onrender.com/ping/${msg.value}`);
+    console.log("response ping  ",response);
+    msg.value = "";
+  }
+
+  const addMsg = (msg: any) =>{
+    let newDiv = document.createElement("div");
+    let newContent = document.createTextNode(msg);
+    newDiv.appendChild(newContent);
+    allMsg.appendChild(newDiv);
+  }
+
+
+
+const registerWorker = async () => {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register('/service-wkr.js', { scope: '/testworker' });
+      console.log('Service worker registration succeeded:', registration);
+
+      // navigator.serviceWorker.ready.then((registration) => {
+      //     (navigator.serviceWorker.controller as any).postMessage({
+      //     type: 'MESSAGE_IDENTIFIER',
+      //   });
+      // });
+
+      navigator.serviceWorker.ready.then((registration) => {
+        (registration.active as any).postMessage({
+            type: 'MESSAGE_IDENTIFIER',
+          }
+        );
+      });
+
+      // navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+      //   // Let's see if you have a subscription already
+      //   return serviceWorkerRegistration.pushManager.getSubscription();
+      // })
+      // .then(function(subscription) {
+      //   if (!subscription) {
+      //     console.log("nooo");
+      //   }
+      //   // You have subscription.
+      //   // Send data to service worker
+      //   (navigator.serviceWorker.controller as any).postMessage({
+      //     type: 'MESSAGE_IDENTIFIER',
+      //   });
+
+      // })
+     
+
+      navigator.serviceWorker.addEventListener('message', event => {
+        // event is a MessageEvent object
+        console.log(`The service worker sent me a message: ${event.data}`);
+        addMsg(event.data);
+      });
+
+
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
+  }
+};
+
+
+
+registerWorker();
+</script>
