@@ -43,7 +43,7 @@
     };
     let subscription
     try{
-      subscription = await registration.pushManager.subscribe(subscriptionOptions);
+      subscription = await registrationMain.pushManager.subscribe(subscriptionOptions);
       subscribeNotification(subscription);
     }catch(e){
       console.log("from error", e)
@@ -83,18 +83,19 @@
     allMsg.appendChild(newDiv);
   };
 
-  var registration: any;
+  var registrationMain: any;
 
   const registerWorker = async () => {
     if ("serviceWorker" in navigator) {
       try {
-        registration = await navigator.serviceWorker.register(
+        await navigator.serviceWorker.register(
           "/service-wkr.js",
           { scope: "/testworker" }
         );
-        console.log("Service worker registration succeeded:", registration);
+        console.log("Service worker registration succeeded:");
 
         navigator.serviceWorker.ready.then((registration) => {
+          registrationMain = registration;
           (registration.active as any).postMessage({
             type: "MESSAGE_IDENTIFIER",
           });
