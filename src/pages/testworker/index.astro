@@ -1,84 +1,124 @@
-
-
 <h1>You need to enable / allow push notification</h1>
-<input type="button" value="Allow Notification" id="allNotification"> </button>
+<input type="button" value="Allow Notification" id="allNotification" />
+<br /><br />
+<input type="button" value="test push" id="pushData" />
 
-    <h1>This is test work page</h1>
-    <input type="text" id="msg" ><br><br>
-    <input type="button" value="Submit" id="send">
-    <br><br>
-    <div id="allMsg">
-
-    </div>
+<h1>This is test work page</h1>
+<input type="text" id="msg" /><br /><br />
+<input type="button" value="Submit" id="send" />
+<br /><br />
+<div id="allMsg"></div>
 
 <script>
+  const urlBase64ToUint8Array = (base64String: any) => {
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, "+")
+      .replace(/_/g, "/");
+
+    const rawData = atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+
+    return outputArray;
+  };
   //console.log(Notification.requestPermission());
-  const askPermission = ()=>{
+  const askPermission = async () => {
     console.log("askPermission");
-    Notification.requestPermission().then(perm=>{
-      if(perm === "granted"){
-        console.log("granted");
-      }
-    })
+    // Notification.requestPermission().then(perm=>{
+    //   if(perm === "granted"){
+    //     console.log("granted");
+    //   }
+    // })
+    let serverPublicKey = urlBase64ToUint8Array(
+      "BIC8gnnjHsk3Sd1HZiOSbu1TFB5ZzhViwoA7kzYmAPW52C7l_y2H9yLPlwCUrpqzWBrJqF4QGZ737kKhgLrmU08"
+    );
 
-  }
-  
-  const msg: any = document.querySelector('#msg');
-  const button: any = document.querySelector('#send');
-  const allMsg: any = document.querySelector('#allMsg');
-  const allNotification: any = document.querySelector('#allNotification');
+    let subscriptionOptions = {
+      userVisibleOnly: true,
+      applicationServerKey: serverPublicKey,
+    };
+    let subscription
+    try{
+      subscription = await registration.pushManager.subscribe(subscriptionOptions);
+      subscribeNotification(subscription);
+    }catch(e){
+      console.log("from error", e)
+    }
+    
+    //console.log(subscription);
+  };
 
-  button.addEventListener('click', () => {
+  const msg: any = document.querySelector("#msg");
+  const button: any = document.querySelector("#send");
+  const allMsg: any = document.querySelector("#allMsg");
+  const allNotification: any = document.querySelector("#allNotification");
+  const pushData: any = document.querySelector("#pushData");
+
+  button.addEventListener("click", () => {
     sendPing();
   });
 
-  allNotification.addEventListener('click', () => {
+  allNotification.addEventListener("click", () => {
     askPermission();
   });
 
-  const sendPing = async ()=> {
-    const response = await fetch(`https://testchat-cpla.onrender.com/ping/${msg.value}`);
-    console.log("response ping  ",response);
+  
+ const sendPing = async () => {
+    const response = await fetch(
+      `https://testchat-cpla.onrender.com/ping/${msg.value}`
+    );
+    console.log("response ping  ", response);
     msg.value = "";
-  }
+  };
 
-  const addMsg = (msg: any) =>{
+  const addMsg = (msg: any) => {
     let newDiv = document.createElement("div");
     let newContent = document.createTextNode(msg);
     newDiv.appendChild(newContent);
     allMsg.appendChild(newDiv);
-  }
+  };
 
+  var registration: any;
 
-
-const registerWorker = async () => {
-  if ('serviceWorker' in navigator) {
-    try {
-      const registration = await navigator.serviceWorker.register('/service-wkr.js', { scope: '/testworker' });
-      console.log('Service worker registration succeeded:', registration);
-
-      navigator.serviceWorker.ready.then((registration) => {
-        (registration.active as any).postMessage({
-            type: 'MESSAGE_IDENTIFIER',
-          }
+  const registerWorker = async () => {
+    if ("serviceWorker" in navigator) {
+      try {
+        registration = await navigator.serviceWorker.register(
+          "/service-wkr.js",
+          { scope: "/testworker" }
         );
-      });
+        console.log("Service worker registration succeeded:", registration);
 
-      
-     navigator.serviceWorker.addEventListener('message', event => {
-        // event is a MessageEvent object
-        console.log(`The service worker sent me a message: ${event.data}`);
-        addMsg(event.data);
-      });
+        navigator.serviceWorker.ready.then((registration) => {
+          (registration.active as any).postMessage({
+            type: "MESSAGE_IDENTIFIER",
+          });
+        });
 
-
-    } catch (error) {
-      console.error(`Registration failed with ${error}`);
+        navigator.serviceWorker.addEventListener("message", (event) => {
+          // event is a MessageEvent object
+          console.log(`The service worker sent me a message: ${event.data}`);
+          addMsg(event.data);
+        });
+      } catch (error) {
+        console.error(`Registration failed with ${error}`);
+      }
     }
+  };
+
+  const subscribeNotification = async (data: any)=>{
+    console.log("from subscribeNotification method");
+    const response = await fetch('https://testchat-cpla.onrender.com/save-subscription', {
+        method: 'post',
+        headers: { 'Content-type': "application/json" },
+        body: JSON.stringify(data)
+    })
+    console.log(response);
   }
-};
 
-
-
-registerWorker();
+  registerWorker();
 </script>

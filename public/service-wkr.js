@@ -33,3 +33,27 @@ self.addEventListener('install', event => {
 
   
 });
+
+self.addEventListener('push', (event) => {
+  let pushMessageJSON = event.data.json();
+console.log("from push event", pushMessageJSON);
+  // Our server puts everything needed to show the notification
+  // in our JSON data.
+  // event.waitUntil(self.registration.showNotification(pushMessageJSON.title, {
+  //     body: pushMessageJSON.body,
+  //     tag: pushMessageJSON.tag,
+  //     actions: [{
+  //         action: pushMessageJSON.actionURL,
+  //         title: pushMessageJSON.actionTitle,
+  //     }]
+  // }));
+  // event.waitUntil(self.registration.showNotification(pushMessageJSON.title, {
+  //     body: pushMessageJSON.body,
+  //     tag: pushMessageJSON.tag
+  // }));
+  self.registration.showNotification(pushMessageJSON.title, {
+    body: pushMessageJSON.body
+  })
+
+
+})
