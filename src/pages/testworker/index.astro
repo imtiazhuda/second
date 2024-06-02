@@ -1,6 +1,7 @@
 
 
-
+<h1>You need to enable / allow push notification</h1>
+<input type="button" value="Allow Notification" id="allNotification"> </button>
 
     <h1>This is test work page</h1>
     <input type="text" id="msg" ><br><br>
@@ -11,17 +12,28 @@
     </div>
 
 <script>
-  console.log(Notification.requestPermission());
-  Notification.requestPermission().then(perm=>{
-    if(perm === "granted"){
-      console.log("granted");
-    }
-  })
+  //console.log(Notification.requestPermission());
+  const askPermission = ()=>{
+    console.log("askPermission");
+    Notification.requestPermission().then(perm=>{
+      if(perm === "granted"){
+        console.log("granted");
+      }
+    })
+
+  }
+  
   const msg: any = document.querySelector('#msg');
   const button: any = document.querySelector('#send');
   const allMsg: any = document.querySelector('#allMsg');
+  const allNotification: any = document.querySelector('#allNotification');
+
   button.addEventListener('click', () => {
     sendPing();
+  });
+
+  allNotification.addEventListener('click', () => {
+    askPermission();
   });
 
   const sendPing = async ()=> {
