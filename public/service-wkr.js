@@ -3,6 +3,7 @@
   eventSource.onmessage = function(event) {
     console.log(event.data);
     client.postMessage(event.data);
+    sendNotification(event.data);
   };
 
 self.addEventListener('message', (event) => {
@@ -22,3 +23,13 @@ let sse = ()=>{
     client.postMessage(event.data);
     };
 }
+
+let sendNotification = (data)=>{
+  self.registration.showNotification(data);
+}
+
+self.addEventListener('install', event => {
+  self.skipWaiting();
+
+  
+});
