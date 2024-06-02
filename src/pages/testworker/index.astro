@@ -47,6 +47,7 @@
       subscribeNotification(subscription);
     }catch(e){
       console.log("from error", e)
+      alert(e);
     }
     
     //console.log(subscription);
@@ -118,6 +119,7 @@
         body: JSON.stringify(data)
     })
     console.log(response);
+    alert("subscribeNotification");
   }
 
   registerWorker();
