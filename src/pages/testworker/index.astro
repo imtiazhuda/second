@@ -123,5 +123,12 @@
     alert("subscribeNotification");
   }
 
-  registerWorker();
+  if ("serviceWorker" in navigator && "PushManager" in window) {
+    registerWorker();
+  }else{
+    console.error("Push notifications are not supported by the browser.");
+    alert("Push notifications are not supported by the browser.")
+  }
+
+  
 </script>
