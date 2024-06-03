@@ -3,7 +3,7 @@
   eventSource.onmessage = function(event) {
     console.log(event.data);
     client.postMessage(event.data);
-    sendNotification(event.data);
+    //sendNotification(event.data);
   };
 
 self.addEventListener('message', (event) => {

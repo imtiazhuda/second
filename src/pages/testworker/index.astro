@@ -1,13 +1,19 @@
-<h1>You need to enable / allow push notification</h1>
-<input type="button" value="Allow Notification" id="allNotification" />
-<br /><br />
-<input type="button" value="test push" id="pushData" />
+---
+import Layout from "../../layouts/Layout.astro"
+---
+<Layout title="Home Page">
+  <h1>You need to enable / allow push notification</h1>
+  <input type="button" value="Allow Notification" id="allNotification" />
+  <br /><br />
+  <input type="button" value="test push" id="pushData" />
 
-<h1>This is test work page</h1>
-<input type="text" id="msg" /><br /><br />
-<input type="button" value="Submit" id="send" />
-<br /><br />
-<div id="allMsg"></div>
+  <h1>This is test work page</h1>
+  <input type="text" id="msg" /><br /><br />
+  <input type="button" value="Submit" id="send" />
+  <br /><br />
+  <div id="allMsg"></div>
+</Layout>
+
 
 <script>
   const urlBase64ToUint8Array = (base64String: any) => {
@@ -89,9 +95,7 @@
     if ("serviceWorker" in navigator) {
       try {
         await navigator.serviceWorker.register(
-          "/service-wkr.js",
-          { scope: "/testworker" }
-        );
+          "/service-wkr.js");
         console.log("Service worker registration succeeded:");
 
         navigator.serviceWorker.ready.then((registration) => {
@@ -120,7 +124,6 @@
         body: JSON.stringify(data)
     })
     console.log(response);
-    alert("subscribeNotification");
   }
 
   if ("serviceWorker" in navigator && "PushManager" in window) {
