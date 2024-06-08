@@ -1,9 +1,11 @@
+const broadcast = new BroadcastChannel('sw-newmsg-channel');
  const eventSource = new EventSource('https://testchat-cpla.onrender.com/random');
  var client;
   eventSource.onmessage = function(event) {
     console.log(event.data);
-    client.postMessage(event.data);
+    //client.postMessage(event.data);
     //sendNotification(event.data);
+    broadcast.postMessage(event.data);
   };
 
 self.addEventListener('message', (event) => {
