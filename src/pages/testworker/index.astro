@@ -25,7 +25,7 @@ import Layout from "../../layouts/Layout.astro"
   const nodeLiveURL = "https://testchat-cpla.onrender.com";
   const webSocketLiveURL = "wss://testchat-cpla.onrender.com";
   const localURL = "http://localhost:3000";
-  const webSocketLocalURL = "ws://localhost:8080/";
+  const webSocketLocalURL = "ws://localhost:3000/";
   const live = true;
   const baseUrl = live ? nodeLiveURL : localURL;
   const websocketUrl = live ? webSocketLiveURL : webSocketLocalURL;
@@ -120,6 +120,7 @@ import Layout from "../../layouts/Layout.astro"
           registrationMain = registration;
           (registration.active as any).postMessage({
             type: "MESSAGE_IDENTIFIER",
+            url: baseUrl
           });
         });
 
@@ -144,7 +145,7 @@ import Layout from "../../layouts/Layout.astro"
 
   const subscribeNotification = async (data: any)=>{
     console.log("from subscribeNotification method");
-    const response = await fetch('https://testchat-cpla.onrender.com/save-subscription', {
+    const response = await fetch(`${baseUrl}/save-subscription`, {
         method: 'post',
         headers: { 'Content-type': "application/json" },
         body: JSON.stringify(data)
